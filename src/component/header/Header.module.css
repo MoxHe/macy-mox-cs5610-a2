@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  background-color: #282828;
+  align-items: center;
+}
+
+.title {
+  font-family: 'Alfa Slab One', cursive;
+  padding: 20px;
+  padding-bottom: 70px;
+  font-size: 300%;
+  color: #b8bb26;
+  text-decoration: none;
+}
+
+.header-text {
+  font-family: 'Press Start 2P', cursive;
+  text-decoration: none;
+  color: #d5c4a1;
+  font-size: 150%;
+  cursor: pointer;
+}
+
+.header-text:hover {
+  color: #fabd2f;
+}
+
+.header-text:active {
+  transform: translateY(4px);
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 50%;
+}
