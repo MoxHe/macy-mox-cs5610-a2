@@ -1,0 +1,47 @@
+.setting-wrapper {
+  font-family: 'Fjalla One', sans-serif;
+  padding-top: 50px;
+  display: flex;
+  width: 10%;
+  flex-direction: column;
+  align-items: center;
+  color: #d5c4a1;
+  font-size: 120%;
+}
+
+label {
+  padding-bottom: 10px;
+}
+
+input {
+  border: 1px solid #282828;
+  margin-bottom: 50px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+input:focus { outline:0 !important; }
+
+button {
+  font-family: 'Fjalla One', sans-serif;
+  border: none;
+  border-radius: 5px;
+  background-color: #b8bb26;
+  color: #3c3836;
+  border: 1px solid gray;
+  padding: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #8dc17c;
+  color: #282828;
+}
+
+button:active {
+  border: none;
+  transform: translateY(4px);
+}
+
+button:focus { outline:0 !important; }
+

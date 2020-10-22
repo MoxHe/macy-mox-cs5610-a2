@@ -1,21 +1,22 @@
 import initialState from './InitialState';
+import actionType from '../action/ActionType'
 
 const reducer = (state = initialState, {type, payload}) => {
   switch (type) {
-    case 'CHANGE_PAGE':
+    case actionType.CHANGE_PAGE:
       return {
         ...state,
         pageId: payload.pageId,
       }
-    case 'CHANGE_SIZE':
+    case actionType.CHANGE_SIZE:
       return {
         ...state,
         gridSize: payload.gridSize,
       }
-    case 'CHANGE_FREQUENCY':
+    case actionType.CHANGE_INTERVAL:
       return {
         ...state,
-        frequency: payload.frequency
+        interval: payload.interval
       }
     default:
       return state;
