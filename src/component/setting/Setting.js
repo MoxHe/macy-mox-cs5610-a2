@@ -26,11 +26,12 @@ const Setting = (props) => {
 
   return (
     <div className={styles["setting-wrapper"]}>
-      <label>Grid Size</label>
-      <input type="number" value={gridSize} onChange={gridSizeChangeHandler} />
-      <label>Generation Interval Time (ms)</label>
-      <input type="number" value={interval} onChange={intervalChangeHandler} />
+      <label className={styles.label}>Grid Size</label>
+      <input className={styles.input} type="number" value={gridSize} onChange={gridSizeChangeHandler} />
+      <label className={styles.label}>Generation Interval Time (ms)</label>
+      <input className={styles.input} type="number" value={interval} onChange={intervalChangeHandler} />
       <button
+        className={styles.button}
         onClick={buttonOnClickHandler}
       >
         Save & Play

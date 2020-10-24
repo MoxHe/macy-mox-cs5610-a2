@@ -9,20 +9,20 @@
   font-size: 120%;
 }
 
-label {
+.label {
   padding-bottom: 10px;
 }
 
-input {
+.input {
   border: 1px solid #282828;
   margin-bottom: 50px;
   border-radius: 5px;
   padding: 5px;
 }
 
-input:focus { outline:0 !important; }
+.input:focus { outline:0 !important; }
 
-button {
+.button {
   font-family: 'Fjalla One', sans-serif;
   border: none;
   border-radius: 5px;
@@ -33,15 +33,15 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.button:hover {
   background-color: #8dc17c;
   color: #282828;
 }
 
-button:active {
+.button:active {
   border: none;
   transform: translateY(4px);
 }
 
-button:focus { outline:0 !important; }
+.button:focus { outline:0 !important; }
 
