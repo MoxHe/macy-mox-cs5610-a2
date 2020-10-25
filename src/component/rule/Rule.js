@@ -1,5 +1,6 @@
 import React from "react";
 
+// TODO: add rules
 const Rule = () => {
   return (
     <div>

@@ -7,6 +7,8 @@ class Play extends React.Component {
   state = {
     operation: null,
     isActive: false,
+    liveCellNumber: 0,
+    isHeatmap: false,
   };
 
   startHandler = () => {
@@ -30,17 +32,36 @@ class Play extends React.Component {
     })
   }
 
+  setCellNumberHandler = (liveCellNumber) => {
+    this.setState({ liveCellNumber });
+  }
+
+  heatMapHandler = () => {
+    this.setState({ isHeatmap: !this.state.isHeatmap });
+  }
+
   render() {
-    const { operation, isActive } = this.state;
+    const { operation, isActive, liveCellNumber, isHeatmap } = this.state;
 
     return (
       <div className={styles.play}>
         <div>
-          <button disabled={isActive} onClick={this.startHandler}>Start</button>
-          <button disabled={!isActive} onClick={this.pauseHandler}>Pause</button>
+          <button disabled={isActive} onClick={this.startHandler}>
+            Start
+          </button>
+          <button disabled={!isActive} onClick={this.pauseHandler}>
+            Pause
+          </button>
           <button onClick={this.resetHandler}>Reset</button>
+          <button onClick={this.heatMapHandler}>Toggle Heatmap</button>
         </div>
-        <Grid isActive={isActive} operation={operation}/>
+        <div>Current number of living cells: {liveCellNumber}</div>
+        <Grid
+          updateCellNumber={this.setCellNumberHandler}
+          isActive={isActive}
+          operation={operation}
+          isHeatmap={isHeatmap}
+        />
       </div>
     );
   }

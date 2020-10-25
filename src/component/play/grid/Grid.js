@@ -1,16 +1,81 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { connect } from "react-redux";
 import Cell from "./cell/Cell";
 import { operationState, direction as dir } from "../../constant/Constant";
 
 const Grid = (props) => {
-  const { gridSize, isActive, operation, intervalTime } = props;
-  const [cells, setCells] = useState(initCells(gridSize));
+  const {
+    gridSize,
+    isActive,
+    operation,
+    intervalTime,
+    updateCellNumber,
+    isHeatmap,
+  } = props;
+  const [grid, setGrid] = useState(initGrid());
 
-  const wrapperStyle = {
-    display: "grid",
-    gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-    gridTemplateRows: `repeat(${gridSize}, 1fr)`,
+  const nextGenerationHandler = useCallback(() => {
+    const { cells, cellNumber } = grid;
+    const newCells = [...cells];
+    let newCellNumber = cellNumber;
+
+    for (let i = 0; i < cells.length; i++) {
+      for (let j = 0; j < cells.length; j++) {
+        let liveNeighbor = 0;
+        for (let k = 0; k < dir.length; k++) {
+          let row = i + dir[k][0];
+          let col = j + dir[k][1];
+          if (
+            row < 0 ||
+            row >= cells.length ||
+            col < 0 ||
+            col >= cells.length
+          ) {
+            continue;
+          }
+          if (cells[row][col] === 0) {
+            liveNeighbor += 1;
+          }
+        }
+
+        if (cells[i][j] === 0 && (liveNeighbor < 2 || liveNeighbor > 3)) {
+          newCellNumber -= 1;
+          newCells[i][j] = 1;
+        } else if (cells[i][j] > 0 && liveNeighbor === 3) {
+          newCellNumber += 1;
+          newCells[i][j] = 0;
+        } else if (cells[i][j] > 0) {
+          newCells[i][j] = cells[i][j] + 1;
+        }
+      }
+    }
+    setGrid({ cells: newCells, cellNumber: newCellNumber });
+  }, [grid]);
+
+  const onClickHandler = (rowIdx, colIdx) => {
+    if (!isActive) {
+      const { cells, cellNumber } = grid;
+      const newCells = [...cells];
+      newCells[rowIdx][colIdx] = cells[rowIdx][colIdx] === 0 ? 1 : 0;
+      const newCellNumber = cellNumber + (cells[rowIdx][colIdx] === 0 ? 1 : -1);
+      setGrid({ cells: newCells, cellNumber: newCellNumber });
+    }
+  };
+
+  function initGrid() {
+    const cells = [];
+    let cellNumber = 0;
+    for (let i = 0; i < gridSize; i += 1) {
+      let row = [];
+      for (let j = 0; j < gridSize; j += 1) {
+        const cell = Math.random() < 0.5 ? 0 : 1;
+        cellNumber += 1 - cell;
+        row.push(cell);
+      }
+      cells.push(row);
+    }
+
+    return { cells, cellNumber };
   }
 
   useEffect(() => {
@@ -33,61 +98,33 @@ const Grid = (props) => {
         clearInterval(interval);
       }
     };
-  }, [isActive, operation]);
+  }, [isActive, operation, nextGenerationHandler, intervalTime]);
 
-  const nextGenerationHandler = () => {
-    const nextCells = [...cells];
+  useEffect(() => {
+    updateCellNumber(grid.cellNumber);
+  }, [grid, updateCellNumber]);
 
-    for (let i = 0; i < cells.length; i++) {
-      for (let j = 0; j < cells.length; j++) {
-
-        let liveNeighbor = 0;
-        for (let k = 0; k < dir.length; k++) {
-          let row = i + dir[k][0];
-          let col = j + dir[k][1];
-          if (row < 0 || row >= cells.length || col < 0 || col >= cells.length) {
-            continue;
-          }
-          if (cells[row][col] === 1) {
-            liveNeighbor += 1;
-          }
-        }
-
-        if (liveNeighbor < 2 || liveNeighbor > 3) {
-          nextCells[i][j] = 0;
-        }
-        if (cells[i][j] === 0 && liveNeighbor === 3) {
-          nextCells[i][j] = 1;
-        }
-      }
-    }
-
-    setCells(nextCells);
+  const wrapperStyle = {
+    display: "grid",
+    gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
+    gridTemplateRows: `repeat(${gridSize}, 1fr)`,
   };
 
   return (
     <div style={wrapperStyle}>
-      {cells.map((row, rowIdx) =>
+      {grid.cells.map((row, rowIdx) =>
         row.map((cell, colIdx) => (
-          <Cell key={`${rowIdx},${colIdx}`} isLive={cell === 1} />
+          <Cell
+            clicked={onClickHandler.bind(this, rowIdx, colIdx)}
+            key={`${rowIdx},${colIdx}`}
+            isHeatmap={isHeatmap}
+            gradient={cell}
+          />
         ))
       )}
     </div>
   );
 };
-
-function initCells(gridSize) {
-  const cells = [];
-  for (let i = 0; i < gridSize; i += 1) {
-    let row = [];
-    for (let j = 0; j < gridSize; j += 1) {
-      row.push(Math.random() < 0.5 ? 0 : 1);
-    }
-    cells.push(row);
-  }
-
-  return cells;
-}
 
 const mapStateToProps = (state) => {
   return {

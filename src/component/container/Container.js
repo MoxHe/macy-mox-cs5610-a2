@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import Setting from "../setting/Setting";
 import Play from "../play/Play";
 import Rule from "../rule/Rule";
+import { page } from "../constant/Constant";
 
 class Container extends React.Component {
   render() {
@@ -21,11 +22,11 @@ class Container extends React.Component {
 
   routePage(pageId) {
     switch (pageId) {
-      case 0:
+      case page.SETTING:
         return <Setting />;
-      case 1:
+      case page.PLAY:
         return <Play />;
-      case 2:
+      case page.RULE:
         return <Rule />;
       default:
         return <Setting />;
