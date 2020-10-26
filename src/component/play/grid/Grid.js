@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Cell from "./cell/Cell";
 import { operationState, direction as dir } from "../../constant/Constant";
@@ -11,86 +11,75 @@ const Grid = (props) => {
     intervalTime,
     updateCellNumber,
     isHeatmap,
+    setDefaultOperationHandler,
   } = props;
   const [grid, setGrid] = useState(initGrid());
 
-  const nextGenerationHandler = useCallback(() => {
-    const { cells, cellNumber } = grid;
-    const newCells = [...cells];
-    let newCellNumber = cellNumber;
+  const nextGenerationHandler = () => {
+    const newGrid = [...grid];
 
-    for (let i = 0; i < cells.length; i++) {
-      for (let j = 0; j < cells.length; j++) {
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid.length; j++) {
         let liveNeighbor = 0;
         for (let k = 0; k < dir.length; k++) {
           let row = i + dir[k][0];
           let col = j + dir[k][1];
-          if (
-            row < 0 ||
-            row >= cells.length ||
-            col < 0 ||
-            col >= cells.length
-          ) {
+          if (row < 0 || row >= grid.length || col < 0 || col >= grid.length) {
             continue;
           }
-          if (cells[row][col] === 0) {
+          if (grid[row][col] === 0) {
             liveNeighbor += 1;
           }
         }
 
-        if (cells[i][j] === 0 && (liveNeighbor < 2 || liveNeighbor > 3)) {
-          newCellNumber -= 1;
-          newCells[i][j] = 1;
-        } else if (cells[i][j] > 0 && liveNeighbor === 3) {
-          newCellNumber += 1;
-          newCells[i][j] = 0;
-        } else if (cells[i][j] > 0) {
-          newCells[i][j] = cells[i][j] + 1;
+        if (grid[i][j] === 0 && (liveNeighbor < 2 || liveNeighbor > 3)) {
+          newGrid[i][j] = 1;
+        } else if (grid[i][j] > 0 && liveNeighbor === 3) {
+          newGrid[i][j] = 0;
+        } else if (grid[i][j] > 0) {
+          newGrid[i][j] = grid[i][j] + 1;
         }
       }
     }
-    setGrid({ cells: newCells, cellNumber: newCellNumber });
-  }, [grid]);
+    setGrid(newGrid);
+  };
 
   const onClickHandler = (rowIdx, colIdx) => {
     if (!isActive) {
-      const { cells, cellNumber } = grid;
-      const newCells = [...cells];
-      newCells[rowIdx][colIdx] = cells[rowIdx][colIdx] === 0 ? 1 : 0;
-      const newCellNumber = cellNumber + (cells[rowIdx][colIdx] === 0 ? 1 : -1);
-      setGrid({ cells: newCells, cellNumber: newCellNumber });
+      const newGrid = [...grid];
+      newGrid[rowIdx][colIdx] = grid[rowIdx][colIdx] === 0 ? 1 : 0;
+      setGrid(newGrid);
     }
   };
 
   function initGrid() {
     const cells = [];
-    let cellNumber = 0;
     for (let i = 0; i < gridSize; i += 1) {
       let row = [];
       for (let j = 0; j < gridSize; j += 1) {
         const cell = Math.random() < 0.5 ? 0 : 1;
-        cellNumber += 1 - cell;
         row.push(cell);
       }
       cells.push(row);
     }
 
-    return { cells, cellNumber };
+    return cells;
   }
 
   useEffect(() => {
     let interval = null;
-    if (operation === operationState.START && isActive) {
+    if (operation === operationState.START) {
       interval = setInterval(nextGenerationHandler, intervalTime);
-    } else if (operation === operationState.PAUSE && !isActive) {
+    } else if (operation === operationState.PAUSE) {
       if (interval) {
         clearInterval(interval);
       }
     } else if (operation === operationState.RESET) {
-      // TODO: reset grid
+      setGrid(initGrid());
       if (interval) {
         clearInterval(interval);
       }
+      setDefaultOperationHandler();
     }
 
     return () => {
@@ -98,11 +87,19 @@ const Grid = (props) => {
         clearInterval(interval);
       }
     };
-  }, [isActive, operation, nextGenerationHandler, intervalTime]);
+  }, [operation]);
 
   useEffect(() => {
-    updateCellNumber(grid.cellNumber);
-  }, [grid, updateCellNumber]);
+    let count = 0;
+    for (let i = 0; i < grid.length; i += 1) {
+      for (let j = 0; j < grid.length; j += 1) {
+        if (grid[i][j] === 0) {
+          count++;
+        }
+      }
+    }
+    updateCellNumber(count);
+  }, [grid]);
 
   const wrapperStyle = {
     display: "grid",
@@ -112,7 +109,7 @@ const Grid = (props) => {
 
   return (
     <div style={wrapperStyle}>
-      {grid.cells.map((row, rowIdx) =>
+      {grid.map((row, rowIdx) =>
         row.map((cell, colIdx) => (
           <Cell
             clicked={onClickHandler.bind(this, rowIdx, colIdx)}

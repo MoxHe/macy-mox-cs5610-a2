@@ -22,18 +22,25 @@ const Setting = (props) => {
     changePage(1);
     changeGridSize(gridSize);
     changeInterval(interval);
-  }
+  };
 
   return (
     <div className={styles["setting-wrapper"]}>
       <label className={styles.label}>Grid Size</label>
-      <input className={styles.input} type="number" value={gridSize} onChange={gridSizeChangeHandler} />
+      <input
+        className={styles.input}
+        type="number"
+        value={gridSize}
+        onChange={gridSizeChangeHandler}
+      />
       <label className={styles.label}>Generation Interval Time (ms)</label>
-      <input className={styles.input} type="number" value={interval} onChange={intervalChangeHandler} />
-      <button
-        className={styles.button}
-        onClick={buttonOnClickHandler}
-      >
+      <input
+        className={styles.input}
+        type="number"
+        value={interval}
+        onChange={intervalChangeHandler}
+      />
+      <button className={styles.button} onClick={buttonOnClickHandler}>
         Save & Play
       </button>
     </div>

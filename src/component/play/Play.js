@@ -11,34 +11,38 @@ class Play extends React.Component {
     isHeatmap: false,
   };
 
+  setDefaultOperationHandler = () => {
+    this.setState({ operation: null });
+  }
+
   startHandler = () => {
     this.setState({
       operation: operationState.START,
       isActive: true,
-    })
-  }
+    });
+  };
 
   pauseHandler = () => {
     this.setState({
       operation: operationState.PAUSE,
       isActive: false,
-    })
-  }
+    });
+  };
 
   resetHandler = () => {
     this.setState({
       operation: operationState.RESET,
       isActive: false,
-    })
-  }
+    });
+  };
 
   setCellNumberHandler = (liveCellNumber) => {
     this.setState({ liveCellNumber });
-  }
+  };
 
   heatMapHandler = () => {
     this.setState({ isHeatmap: !this.state.isHeatmap });
-  }
+  };
 
   render() {
     const { operation, isActive, liveCellNumber, isHeatmap } = this.state;
@@ -52,7 +56,9 @@ class Play extends React.Component {
           <button disabled={!isActive} onClick={this.pauseHandler}>
             Pause
           </button>
-          <button onClick={this.resetHandler}>Reset</button>
+          <button disabled={isActive} onClick={this.resetHandler}>
+            Reset
+          </button>
           <button onClick={this.heatMapHandler}>Toggle Heatmap</button>
         </div>
         <div>Current number of living cells: {liveCellNumber}</div>
@@ -61,6 +67,7 @@ class Play extends React.Component {
           isActive={isActive}
           operation={operation}
           isHeatmap={isHeatmap}
+          setDefaultOperationHandler={this.setDefaultOperationHandler}
         />
       </div>
     );

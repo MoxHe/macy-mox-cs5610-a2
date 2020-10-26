@@ -19,7 +19,7 @@ export const page = {
   SETTING: 0,
   PLAY: 1,
   RULE: 2,
-}
+};
 
 export const heatmap = [
   "#ffffff",
