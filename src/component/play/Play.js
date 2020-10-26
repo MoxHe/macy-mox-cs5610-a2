@@ -13,7 +13,7 @@ class Play extends React.Component {
 
   setDefaultOperationHandler = () => {
     this.setState({ operation: null });
-  }
+  };
 
   startHandler = () => {
     this.setState({
@@ -49,19 +49,37 @@ class Play extends React.Component {
 
     return (
       <div className={styles.play}>
-        <div>
-          <button disabled={isActive} onClick={this.startHandler}>
+        <div className={styles.buttons}>
+          <button
+            className={styles.button}
+            disabled={isActive}
+            onClick={this.startHandler}
+          >
             Start
           </button>
-          <button disabled={!isActive} onClick={this.pauseHandler}>
+          <button
+            className={styles.button}
+            disabled={!isActive}
+            onClick={this.pauseHandler}
+          >
             Pause
           </button>
-          <button disabled={isActive} onClick={this.resetHandler}>
+          <button
+            className={styles.button}
+            disabled={isActive}
+            onClick={this.resetHandler}
+          >
             Reset
           </button>
-          <button onClick={this.heatMapHandler}>Toggle Heatmap</button>
+          <button className={styles.button} onClick={this.heatMapHandler}>
+            Toggle Heatmap
+          </button>
         </div>
-        <div>Current number of living cells: {liveCellNumber}</div>
+        <div className={styles.text}>
+          Current number of living cells:
+          <span className={styles.number}>{liveCellNumber}</span>
+        </div>
+
         <Grid
           updateCellNumber={this.setCellNumberHandler}
           isActive={isActive}

@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "./Cell.module.css";
 import { heatmap } from "../../../constant/Constant";
+import {connect} from "react-redux";
 
 const Cell = (props) => {
-  const { gradient, isHeatmap, isActive } = props;
+  const { gradient, isHeatmap, isActive, gridSize } = props;
 
   let color;
   if (isHeatmap) {
@@ -12,13 +12,26 @@ const Cell = (props) => {
     color = gradient === 0 ? "white" : "black";
   }
 
+  const windowWidth = window.innerWidth;
+  const size = windowWidth * 0.35 / gridSize;
+
+  const style = {
+    backgroundColor: color,
+    cursor: isActive ? "auto" : "pointer",
+    width: `${size}px`,
+    height: `${size}px`,
+    border: "1px solid gray",
+  };
+
   return (
-    <div
-      onClick={props.clicked}
-      style={{ backgroundColor: color, cursor: isActive ? "auto" : "pointer" }}
-      className={styles.cell}
-    ></div>
+    <div onClick={props.clicked} style={style} ></div>
   );
 };
 
-export default Cell;
+const mapStateToProps = (state) => {
+  return {
+    gridSize: state.gridSize,
+  };
+};
+
+export default connect(mapStateToProps, null)(Cell);

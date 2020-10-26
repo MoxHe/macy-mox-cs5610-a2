@@ -87,6 +87,7 @@ const Grid = (props) => {
         clearInterval(interval);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [operation]);
 
   useEffect(() => {
@@ -99,8 +100,8 @@ const Grid = (props) => {
       }
     }
     updateCellNumber(count);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grid]);
-
   const wrapperStyle = {
     display: "grid",
     gridTemplateColumns: `repeat(${gridSize}, 1fr)`,

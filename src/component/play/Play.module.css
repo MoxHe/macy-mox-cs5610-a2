@@ -4,3 +4,60 @@
   flex-direction: column;
   align-items: center;
 }
+
+.buttons {
+  padding-top: 50px;
+  display: flex;
+  width: 50%;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.button {
+  font-family: 'Fjalla One', sans-serif;
+  border: none;
+  border-radius: 5px;
+  background-color: #b8bb26;
+  color: #3c3836;
+  border: 1px solid gray;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  font-size: 110%;
+}
+
+.button:hover {
+  background-color: #8dc17c;
+  color: #282828;
+}
+
+.button:active {
+  border: none;
+  transform: translateY(4px);
+}
+
+.button:focus {
+  outline:0 !important;
+}
+
+.button:disabled {
+  background-color: #827f7e;
+  color: #5f5e5d;
+}
+
+.text {
+  display: flex;
+  font-family: 'Fjalla One', sans-serif;
+  padding-top: 20px;
+  align-items: center;
+  color: #d5c4a1;
+  font-size: 120%;
+  padding-bottom: 20px;
+}
+.number {
+  font-family: 'Press Start 2P', cursive;
+  color: #b8bb26;
+  padding-left: 20px;
+}
