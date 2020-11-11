@@ -65,7 +65,7 @@ const Grid = props => {
         for (let i = 0; i < gridSize; i += 1) {
             let row = [];
             for (let j = 0; j < gridSize; j += 1) {
-                const cell = Math.random() < 0.05 ? 0 : 1;
+                const cell = Math.random() < 0.5 ? 0 : 1;
                 row.push(cell);
             }
             cells.push(row);
