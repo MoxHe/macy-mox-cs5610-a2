@@ -1,0 +1,20 @@
+.title {
+    font-family: 'Fjalla One', sans-serif;
+    font-size: 200%;
+    color: #b8bb26;
+  }
+  
+  .content {
+    font-family: 'Fjalla One', sans-serif;
+    padding-bottom: 40px;
+    font-size: 120%;
+    color: #d5c4a1;
+    text-decoration: none;
+  }
+  
+  .source-code {
+    font-family: 'Fjalla One', sans-serif;
+    padding-bottom: 40px;
+    font-size: 100%;
+    color: #f09825;
+  }
